@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (isset($_SESSION["user"])) {
+    header("Location: index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +30,7 @@
 
             $errors = array();
 
-            if (empty($fullName) OR empty($email) OR empty($password) OR empty($passwordRepeat)) {
+            if (empty($fullName) or empty($email) or empty($password) or empty($passwordRepeat)) {
                 array_push($errors, "All fields are required");
             }
 
@@ -32,21 +38,27 @@
                 array_push($errors, "Email is not valid");
             }
 
-            if(strlen($password)<8) {
+            if (strlen($password) < 8) {
                 array_push($errors, "Password must be at least 8 charactes long");
             }
 
-            if ($password!==$passwordRepeat) {
+            if ($password !== $passwordRepeat) {
                 array_push($errors, "Password does not match");
             }
 
-            if (count($errors)>0) {
+            require_once "database.php";
+            $sql = "SELECT * FROM users WHERE email = '$email'";
+            $result = mysqli_query($conn, $sql);
+            $rowCount = mysqli_num_rows($result);
+            if ($rowCount > 0) {
+                array_push($errors, "Email already exists");
+            }
+
+            if (count($errors) > 0) {
                 foreach ($errors as $error) {
                     echo "<div class='alert alert-danger'>$error</div>";
                 }
             } else {
-                require_once "database.php";
-
                 $sql = "INSERT INTO users (first_name, email, password) VALUES ( ?, ?, ? )";
 
                 $stmt = mysqli_stmt_init($conn);
@@ -57,7 +69,7 @@
                     mysqli_stmt_execute($stmt);
                     echo "<div class='alert alert-success'>You are registered successfully!</div>";
                 } else {
-                    die ("Something went wrong?");
+                    die("Something went wrong?");
                 }
             }
         }
@@ -79,6 +91,9 @@
                 <input type="submit" class="btn btn-success" value="Register" name="submit">
             </div>
         </form>
+        <div class="">
+            <p>Already Registered<a href="login.php">Login Here</a></p>
+        </div>
     </div>
 
     <!-- link bootstrap js -->
