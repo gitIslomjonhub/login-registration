@@ -55,7 +55,7 @@ if (isset($_SESSION["user"])) {
             </div>
         </form>
         <div class="">
-            <p>Not registered yet <a href="registration.php">Register Here</a></p>
+            <p class="text-center">Not registered yet <a href="registration.php" class="px-3">Register Here</a></p>
         </div>
     </div>
 

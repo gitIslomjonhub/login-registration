@@ -91,8 +91,8 @@ if (isset($_SESSION["user"])) {
                 <input type="submit" class="btn btn-success" value="Register" name="submit">
             </div>
         </form>
-        <div class="">
-            <p>Already Registered<a href="login.php">Login Here</a></p>
+        <div class="my-3">
+            <p class="text-center">Already Registered<a href="login.php" class="px-3">Login Here</a></p>
         </div>
     </div>
 
